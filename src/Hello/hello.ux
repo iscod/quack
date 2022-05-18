@@ -1,0 +1,227 @@
+<template>
+  <!-- Only one root node is allowed in template. -->
+  <div class="container">
+    <!-- <text class="title">Hello World</text> -->
+       <!-- <div> -->
+    <!-- <text class="token">{{token}}</text> -->
+    <!-- </div> -->
+  <tabs onchange="tabChange">
+    <tab-content>
+      <div class="tab-content" for="(index,tabItem) in tabsData">
+        <div class="desc-container mlr-container">
+            <text class="head color-secondary">
+              <block tid="content">
+                <span>{{tabItem.desc}}</span>
+              </block>
+            </text>
+            <text class="desc color-secondary">
+              <block tid="content">
+                <span></span>
+              </block>
+            </text>
+        </div>
+        <div class="case-list mlr-container bro-l" show="{{index == 0}}">
+          <div class="case-service item-container">
+            <div class="icon-container column-center">
+              <text class="name color-black"><span>这里改成自己的通知内容</span></text>
+              <image src="/Common/img/icon/copy.png" alt="group icon" onclick="copy({{token}})" class="icon"></image>
+            </div>
+          
+            <div class="case-item divider-border-color">
+              <text class="name color-primary" onclick="copy({{token}})">{{tokenStr}}</text>
+            </div>
+            <div class="icon-container column-center">
+              <text class="name color-black"><span>点击右上角按钮可以复制测试URL</span></text>
+              </div>
+          </div>
+        </div>
+        <div class="case-list mlr-container bro-l" show="{{index == 1}}">
+          <div class="cast-histtory item-container">
+            <text class="name color-primary">你好，这是Quack发送给你的通知</text>
+            <text class="name color-black"><span>12:01</span></text>
+          </div>
+        </div>
+        <div class="case-list mlr-container bro-l" show="{{index == 2}}">
+          <text class="item-title"><span>消息</span></text>
+          <div class="item-container">
+            <div class="switch-wrap">
+                <div class="switch-content border-bottom">
+                    <text class="label">默认保存</text>
+                    <switch checked="true" class="switch"></switch>
+                </div>
+              </div>
+            </div>
+            <text class="item-title"><span>其它</span></text>
+            <div class="item-container">
+              <div class="switch-wrap">
+                <div class="switch-content border-bottom">
+                    <text class="label">常见问题</text>
+                    <a href="http://iscod.github.io">></a>
+                </div>
+                <div class="switch-content border-bottom">
+                    <text class="label">App源码</text>
+                    <a href="http://iscod.github.io">></a>
+                </div>
+                <div class="switch-content">
+                    <text class="label">文档</text>
+                    <a href="http://iscod.github.io">></a>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </tab-content>
+      <tab-bar class="tab-bar">
+        <div class="tab-item row-center column-center" for="(index,tab) in tabsData">
+                    <image src="{{tabIndex === index ? tab.tabIconActive : tab.tabIconNormal}}" alt="tabbar icon" class="tab-icon"></image>
+          <text class="tab-name {{tabIndex === index ? 'color-a' : ''}}">{{$t(tab.name)}}</text>
+        </div>
+      </tab-bar>
+    </tabs>
+  </div>
+</template>
+
+<style lang="sass">
+  @import '../Common/css/variable.scss';
+  @import '../Common/css/common.scss';
+  .container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .tab-content {
+    flex-direction: column;
+  }
+
+  /* 功能描述 */
+.desc-container {
+  margin-top: 48px;
+  margin-bottom: 48px;
+  .head {
+    font-size: 48px;
+  }
+  .desc, .head {
+    .des-link{
+      font-weight: $btn-font-weight;
+      color: $color-a;
+    }
+  }
+}
+
+  .title {
+    font-size: 100px;
+  }
+
+  .tab-bar {
+    height: 110px;
+    .tab-item {
+      flex-direction: column;
+      .tab-icon {
+        margin: 0 auto;
+        text-align: center;
+        height: 50px;
+      }
+      .tab-name {
+        text-align: center;
+        font-size: 26px;
+      }
+    }
+  }
+  .case-list {
+    margin-bottom: 24px;
+    flex-direction: column;
+    .case-service {
+      padding: 8px 24px;
+      background-color: #fff;
+    }
+    .icon-container {
+      flex-basis: 88px;
+      flex-shrink: 0;
+    }
+    .icon {
+      width: 64px;
+      height: 64px;
+    }
+    .name {
+      width: 100%;
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
+    .color-black {
+      font-size: 24px;
+    }
+  }
+
+ .item-container {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    flex-direction: column;
+    
+  }
+  .switch-wrap {
+    padding-left: 10px;
+    flex-direction: column;
+  }
+  .switch {
+    background-color: #fff;
+    margin-right: 10px;
+  }
+  .switch-content {
+    padding-right: 10px;
+  }
+  .border-bottom {
+    border-color: #eee;
+    border-bottom-width: 1px;
+  }
+  .label {
+      flex: 1;
+      height: 100px;
+  }
+</style>
+<script>
+  import { tabsData } from './data';
+  import clipboard from '@system.clipboard'
+  import prompt from '@system.prompt'
+  module.exports = {
+    data: {
+      tabsData: ["服务器", "历史消息", "设置"],
+      token: '',
+      tokenStr: '',
+      tabIndex: 0,
+    },
+    onInit() {
+      this.tabsData = [tabsData.service, tabsData.history, tabsData.setting];
+      this.$page.setTitleBar({
+        text: 'menu',
+        textColor: '#ffffff',
+        backgroundColor: '#007DFF',
+        backgroundOpacity: 0.5,
+        menu: true
+      });
+    },
+    copy(text) {
+      clipboard.set({
+        text: text,
+        success: function(){
+          prompt.showToast({
+            message:'复制成功',
+            duration: 0,
+            gravity: 'center'
+          })
+        }
+      })
+      
+    },
+    onShow(options) {
+      '// Do something when show.'
+      console.log("message:", this.token);
+      this.token = this.$app.$def.dataApp.token
+      this.tokenStr = this.token.slice(0, 10) + "*******"
+      console.log("message:", this.token);
+      console.log("message:", this.tokenStr);
+    },
+    tabChange(e) {
+      this.tabIndex = e.index;
+    }
+  }
+</script>

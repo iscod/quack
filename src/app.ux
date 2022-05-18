@@ -1,0 +1,33 @@
+<script>
+import push from '@service.push' 
+  module.exports = {
+    onCreate() {
+      // setTimeout(() => {
+      this.checkToken();
+        // }, 1000);
+      console.info('Application onCreate');
+    },
+    onDestroy() {
+      console.info('Application onDestroy');
+    },
+    checkToken() {
+      var that = this;
+      push.subscribe({
+          success: function(data) {
+            that.dataApp.token =  data.regId
+            console.log("push.subscribe succeeded, result data=" + JSON.stringify(data));
+          },
+          fail: function(data, code) {
+              console.log("push.subscribe failed, result data=" + JSON.stringify(data) + ", code=" + code);
+          },
+          complete: function() {
+              console.log("push.subscribe completed");
+          }
+      });
+    },
+    dataApp: {
+      token: "123214",
+      localeData: {}
+    }
+  }
+</script>

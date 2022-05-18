@@ -1,0 +1,34 @@
+{
+  "package": "com.quack.quackapp",
+  "name": "quack",
+  "versionName": "1.0.0",
+  "versionCode": 1,
+  "icon": "/Common/logo.png",
+  "minPlatformVersion": 1060,
+  "features": [
+    {"name": "service.push"}
+  ],
+  "config": {
+    "logLevel": "debug"
+  },
+  "router": {
+    "entry": "Hello",
+    "pages": {
+      "Hello": {
+        "component": "hello"
+      }
+    }
+  },
+  "display": {
+    "backgroundColor": "#F1F3F5",
+    "titleBarBackgroundColor": "#F1F3F5",
+    "titleBarTextColor": "#000000",
+    "menu": true,
+    "textSizeAdjust": "auto",
+    "pages": {
+      "Hello": {
+        "titleBarText": "给自己发消息"
+      }
+    }
+  }
+}
